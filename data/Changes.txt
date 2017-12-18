@@ -1,0 +1,9 @@
+
+Config path change in Ubuntu
+=================================
+module.php / Album 
+
+
+sudo apt-get install php7.1-intl
+
+
