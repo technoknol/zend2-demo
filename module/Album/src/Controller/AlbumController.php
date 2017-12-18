@@ -4,7 +4,11 @@ namespace Album\Controller;
 
 // Add the following import:
 use Album\Model\AlbumTable;
+use function get_class_methods;
+use Zend\Authentication\AuthenticationService;
+use Zend\Db\Adapter\Adapter;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
 // Add the following import statements at the top of the file:
 use Album\Form\AlbumForm;
@@ -122,5 +126,49 @@ class AlbumController extends AbstractActionController
             'id'    => $id,
             'album' => $this->table->getAlbum($id),
         ];
+    }
+
+    public function sessionAction() {
+        $c = new Container();
+        if (!isset($c->count)) {
+            $c->count = 0;
+        } else {
+            $c->count++;
+        }
+//        echo '<pre>';
+//        print_r(get_class_methods($c));
+//        print_r(($c->getName()));
+//        die;
+
+        $view = new ViewModel([
+            'count' => $c->count,
+        ]);
+        return $view;
+
+    }
+    public function loginAction() {
+//        $config = $container->get('config');
+        $adap = new Adapter('lkajsdf', 'askjdfh');
+        $auth = new AuthenticationService();
+
+        $result = $auth->authenticate($adap);
+        echo '<pre>';
+//        print_r(get_class_methods($c));
+        print_r(($result));
+        die;
+
+        if($result->isValid) {
+            $identity = $auth->getIdentity();
+        } else {
+            // process $result->getMessages()
+        }
+// clear
+        $auth->clearIdentity();
+
+        $view = new ViewModel([
+            'count' => $c->count,
+        ]);
+        return $view;
+
     }
 }
