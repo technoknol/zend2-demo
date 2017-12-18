@@ -15,8 +15,28 @@ return [
     'db' => [
         'driver' => 'Pdo',
         // 'dsn'    => sprintf('sqlite:%s/data/zftutorial.db', realpath(getcwd())),
-        'dsn'    => 'mysql:dbname=t_zend_demo;host=localhost',
-        'username'=>  'root',
-        'password' => ''
+        'driver_options' => array(
+            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+        ),
+
+//        'dsn'    => 'mysql:dbname=s_zf2-demo;host=localhost',
+//        'username'=>  'root',
+//        'password' => 'root'
     ],
+    'service_manager' => array(
+        'factories' => array(
+            'Zend\Db\Adapter\Adapter'
+            => 'Zend\Db\Adapter\AdapterServiceFactory',
+        ),
+        /* Moved to Auth module to allow to be replaced by Doctrine or other.
+        // added for Authentication and Authorization. Without this each time we have to create a new instance.
+        // This code should be moved to a module to allow Doctrine to overwrite it
+        'aliases' => array( // !!! aliases not alias
+            'Zend\Authentication\AuthenticationService' => 'my_auth_service',
+        ),
+        'invokables' => array(
+            'my_auth_service' => 'Zend\Authentication\AuthenticationService',
+        ),
+        */
+    ),
 ];
